@@ -183,7 +183,7 @@
     </div>
 
     <div id="step2" class="card hidden">
-        <h1>그래서... 언제 볼까? 🗓️</h1>
+        <h1>그래서... 우리 언제 볼까? 🗓️</h1>
         <input type="date" id="date-input">
         <input type="time" id="time-input">
         <button class="primary-btn" style="margin-top:20px; width: 100%;" onclick="goToMenu()">이 날짜로 할게!</button>
@@ -285,20 +285,30 @@
             
             nextStep(5);
 
-            // 💡 디스코드로 알림 쏘는 마법의 코드
-            if(webhookUrl !== "https://discord.com/api/webhooks/1540732781473046600/Wpv1bkhZ5dJLsRbR-GBX0iy4rFg14V9JVP9KceDdMdYyaq-kYT768KKUL1tlb1mswOfQ") {
-                const message = {
-                    content: `🌸 **새로운 데이트 예약이 도착했습니다!** 🌸\n\n📅 **날짜:** ${selectedDate}\n⏰ **시간:** ${selectedTime}\n🍽️ **메뉴:** ${selectedMenu}\n📍 **장소:** ${finalStation}`
-                };
+           // 💡 디스코드로 알림 쏘는 마법의 코드 (보안 우회 프록시 적용!)
+        if(webhookUrl !== "https://discord.com/api/webhooks/1540732781473046600/Wpv1bkhZ5dJLsRbR-GBX0iy4rFg14V9JVP9KceDdMdYyaq-kYT768KKUL1tlb1mswOfQ") {
+            const message = {
+                content: `🌸 **새로운 데이트 예약이 도착했습니다, 형님!** 🌸\n\n📅 **날짜:** ${selectedDate}\n⏰ **시간:** ${selectedTime}\n🍽️ **메뉴:** ${selectedMenu}\n📍 **장소:** ${finalStation}`
+            };
 
-                fetch(webhookUrl, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(message)
-                }).catch(err => console.error(err)); // 실패 시 몰래 에러만 기록
-            }
+            // 브라우저 차단을 뚫기 위해 무료 프록시(corsproxy.io)를 경유합니다.
+            const proxyUrl = "https://corsproxy.io/?" + encodeURIComponent(webhookUrl);
+
+            fetch(proxyUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(message)
+            })
+            .then(response => {
+                if(!response.ok) throw new Error("전송 실패");
+                console.log("알림 전송 성공!");
+            })
+            .catch(err => {
+                console.error("알림 에러 발생:", err);
+            });
+        }
             
             var duration = 3 * 1000;
             var end = Date.now() + duration;
