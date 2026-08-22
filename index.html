@@ -32,22 +32,22 @@
 <body>
 
     <div id="step1" class="card">
-        <h1>🌸 나랑 데이트 할래? 🌸</h1>
+        <h1>🌸 주말에 나랑 데이트 할래? 🌸</h1>
         <div>
-            <button class="primary-btn" onclick="nextStep(2)">좋아~!~! ❤️</button>
-            <button id="no-btn">싫어. 🐾</button>
+            <button class="primary-btn" onclick="nextStep(2)">응 좋아 ❤️</button>
+            <button id="no-btn">싫어 🐾</button>
         </div>
     </div>
 
     <div id="step2" class="card hidden">
-        <h1>그래서... 우리 언제 볼까? 🗓️</h1>
+        <h1>그래서... 언제 볼까? 🗓️</h1>
         <input type="date" id="date-input">
         <input type="time" id="time-input">
         <button class="primary-btn" style="margin-top:20px; width: 100%;" onclick="goToMenu()">이 날짜로 할게!</button>
     </div>
 
     <div id="step3" class="card hidden">
-        <h1>그래! 이 날 뭐 먹고 싶어? 😋</h1>
+        <h1>그래! 이 날 뭐 땡겨? 😋</h1>
         <div class="menu-grid">
             <button class="menu-btn" onclick="goToMap('훠궈')"><span class="menu-icon">🍲</span>훠궈</button>
             <button class="menu-btn" onclick="goToMap('파스타')"><span class="menu-icon">🍝</span>파스타</button>
@@ -92,9 +92,6 @@
 
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <script>
-        // ⚠️ Make.com에서 받은 웹훅 주소를 아래에 정확히 넣어주세요 ⚠️
-        const makeWebhookUrl = "https://hook.us2.make.com/33104yfhmvynxf3rhytbugsp65kocd76"; 
-
         let selectedDate = '', selectedTime = '', selectedMenu = '';
 
         const noBtn = document.getElementById('no-btn');
@@ -137,19 +134,22 @@
             
             nextStep(5);
 
-            // Make.com으로 보내는 정갈한 데이터 구조
-            if(makeWebhookUrl !== "여기에_주소를_넣으세요.") {
-                const payload = {
-                    content: `🌸 **새로운 예약!** 🌸\n📅 **날짜:** ${selectedDate}\n⏰ **시간:** ${selectedTime}\n🍽️ **메뉴:** ${selectedMenu}\n📍 **장소:** ${finalStation}`
-                };
+            // 형님의 Make.com 웹훅 주소가 고정되어 있습니다!
+            const makeWebhookUrl = "https://hook.us2.make.com/33104yfhmvynxf3rhytbugsp65kocd76";
 
-                fetch(makeWebhookUrl, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
-                }).then(() => console.log("전송 성공!")).catch(e => console.error(e));
-            }
+            // Make.com으로 보내는 정갈한 데이터 구조 (if문 완전히 제거됨!)
+            const payload = {
+                content: `🌸 **새로운 예약!** 🌸\n📅 **날짜:** ${selectedDate}\n⏰ **시간:** ${selectedTime}\n🍽️ **메뉴:** ${selectedMenu}\n📍 **장소:** ${finalStation}`
+            };
+
+            // 무조건 발사!
+            fetch(makeWebhookUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            }).then(() => console.log("전송 성공!")).catch(e => console.error(e));
             
+            // 축하 폭죽 애니메이션
             var duration = 3 * 1000, end = Date.now() + duration;
             (function frame() {
                 confetti({ particleCount: 5, angle: 60, spread: 55, origin: { x: 0 }, colors: ['#ff6b81', '#ffffff'] });
